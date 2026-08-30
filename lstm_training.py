@@ -1,3 +1,5 @@
+import os
+os.environ['TF_USE_LEGACY_KERAS'] = '1'
 from util import dataset, plot_training, save_results, multipleDataset
 import numpy as np
 from models import LSTM
