@@ -79,5 +79,20 @@ load_and_tune
 Load a pretrained model and tune the network on the specified dataset
 
 Results:
-<img width="1156" height="470" alt="download" src="https://github.com/user-attachments/assets/3d903ebc-7ad3-4e06-8641-1c05614b1d75" />
+<img width="1156" height="470" alt="image" src="https://github.com/user-attachments/assets/efe4a575-a4db-45b1-a48f-f86ebe68bd1d" />
+
+<img width="1156" height="470" alt="image" src="https://github.com/user-attachments/assets/baae563e-7fd0-4126-b0b5-857ff01fafda" />
+
+<img width="1156" height="470" alt="image" src="https://github.com/user-attachments/assets/4837e321-52c5-495d-80dd-30d829072b59" />
+
+<img width="1156" height="470" alt="image" src="https://github.com/user-attachments/assets/5a002e8e-e943-409f-a9be-e113f3e4d98f" />
+
+<img width="1156" height="470" alt="image" src="https://github.com/user-attachments/assets/24b50366-e656-41c1-9ba4-a3e7afd57d35" />
+
+<img width="1156" height="470" alt="image" src="https://github.com/user-attachments/assets/3b9e00d0-abba-4d1c-847f-17cef497ed3f" />
+
+
+
+
+
 
