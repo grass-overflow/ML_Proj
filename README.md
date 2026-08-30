@@ -77,3 +77,7 @@ load_and_tune
 ```
 
 Load a pretrained model and tune the network on the specified dataset
+
+Results:
+<img width="1156" height="470" alt="download" src="https://github.com/user-attachments/assets/3d903ebc-7ad3-4e06-8641-1c05614b1d75" />
+
