@@ -11,7 +11,7 @@ from tensorflow import keras
 from util import dataset, plot_training, save_results, multipleDataset
 from datetime import datetime
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 wins = [288]
 hs = [2]
 resources = ['cpu']
@@ -78,7 +78,8 @@ for tuning_rate in tuning_rates:
                             'second_lstm_dim': int(parameters['second_lstm_dim']),
                             'first_dense_dim': int(parameters['first_dense_dim']),
                             'first_dense_activation': dense_act,
-                            'mlp_units': np.array(parameters['mlp_units'][1:-1].split(','), dtype=int),
+                            'mlp_units': [int(x) for x in parameters['mlp_units'][1:-1].split(',')],
+
                             'dense_kernel_init': parameters['dense_kernel_init'],
                             'batch_size': int(parameters['batch_size']),
                             'epochs': 15,
