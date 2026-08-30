@@ -154,3 +154,7 @@ for tuning_rate in tuning_rates:
                             history = best_history
                             train_model = best_model
                             save_results.save_errors(mses, maes, model.name)
+                            print(f"\n--- [FINAL RESULTS: {model.name}] ---")
+                            print(f"Average MSE: {np.mean(mses):.4f}")
+                            print(f"Average MAE: {np.mean(maes):.4f}")
+                            print("---------------------------------------\n")
