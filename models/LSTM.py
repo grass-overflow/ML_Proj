@@ -3,7 +3,6 @@ os.environ['TF_USE_LEGACY_KERAS'] = '1'
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
-import talos
 from tensorflow import keras
 from tensorflow.keras import layers, Model
 from tensorflow.keras.layers import Dense, LSTM, Lambda
@@ -43,7 +42,7 @@ class LSTMPredictor(ModelInterface):
 
     def training(self, X_train, y_train, X_test, y_test, p):
         training_start = datetime.now()
-        history, self.model = self.talos_model(X_train, y_train, X_test, y_test, p)
+        history, self.model = self.talos_model(X_train, y_train, None, None, p)
         training_time = datetime.now() - training_start
 
         inference_start = datetime.now()
@@ -91,7 +90,8 @@ class LSTMPredictor(ModelInterface):
                                  metrics=["mse", "mae"])
 
         save_check = custom_keras.CustomSaveCheckpoint(self)
-        es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=p['patience'])
+        es = EarlyStopping(monitor='val_loss', mode='min', verbose=1,
+                           patience=p['patience'], restore_best_weights=True)
 
         history = self.train_model.fit(X_train, y_train, epochs=p['epochs'], batch_size=p['batch_size'],
                                        validation_split=0.2, verbose=2, callbacks=[es, save_check])
@@ -179,10 +179,15 @@ class LSTMPredictor(ModelInterface):
                                  metrics=["mse", "mae"])
 
         save_check = custom_keras.CustomSaveCheckpoint(self)
-        es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=p['patience'])
-
-        history = self.train_model.fit(X_train, y_train, epochs=p['epochs'], batch_size=p['batch_size'],
-                                       validation_split=0.2, verbose=2, callbacks=[es, save_check])
+        es = EarlyStopping(monitor='val_loss', mode='min', verbose=1,
+                           patience=p['patience'], restore_best_weights=True)
+        fit_options = {'validation_split': 0.2}
+        if x_val is not None and y_val is not None and len(x_val):
+            fit_options = {'validation_data': (x_val, y_val)}
+        history = self.train_model.fit(
+            X_train, y_train, epochs=p['epochs'], batch_size=p['batch_size'],
+            verbose=2, callbacks=[es, save_check], **fit_options
+        )
 
         self.model = save_check.dnn.model
 
