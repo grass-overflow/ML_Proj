@@ -40,6 +40,11 @@ def parse_args():
     parser.add_argument("--mc-samples", type=int, default=5)
     parser.add_argument("--inference-repeats", type=int, default=10)
     parser.add_argument("--max-transfer-targets", type=int, default=None)
+    parser.add_argument(
+        "--paper-faithful",
+        action="store_true",
+        help="Preserve saved paper-scale epochs, patience, and batch sizes.",
+    )
     parser.add_argument("--no-plots", action="store_true")
     args = parser.parse_args()
     if args.runs < 1:
@@ -216,16 +221,18 @@ def load_parameters(model_name, dataset, prediction_type, training_type, resourc
         parameters["epochs"] = args.epochs
     elif args.mode == "quick":
         parameters["epochs"] = min(parameters["epochs"], 3)
-    else:
+    elif not args.paper_faithful:
         parameters["epochs"] = min(parameters["epochs"], 100)
     if args.patience is not None:
         parameters["patience"] = args.patience
     else:
-        parameters["patience"] = min(parameters["patience"], 8 if args.mode != "quick" else 2)
+        if not args.paper_faithful:
+            parameters["patience"] = min(parameters["patience"], 8 if args.mode != "quick" else 2)
     if args.batch_size is not None:
         parameters["batch_size"] = args.batch_size
     else:
-        parameters["batch_size"] = min(parameters["batch_size"], 64 if args.mode == "quick" else 128)
+        if not args.paper_faithful:
+            parameters["batch_size"] = min(parameters["batch_size"], 64 if args.mode == "quick" else 128)
     parameters["weight_file"] = ""
     parameters["_parameter_path"] = parameter_path or "defaults"
     return parameters
@@ -910,7 +917,9 @@ def main():
 
     os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
     os.environ.setdefault("TF_USE_LEGACY_KERAS", "1")
-    os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+    use_gpu = os.environ.get("WORKLOAD_USE_GPU", "0") == "1"
+    if not use_gpu:
+        os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
     os.environ["OMP_NUM_THREADS"] = "1"
     os.environ["OPENBLAS_NUM_THREADS"] = "1"
     os.environ["MKL_NUM_THREADS"] = "1"
