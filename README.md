@@ -82,3 +82,5 @@ results/logs/            per-invocation logs
 ```
 
 Plots are generated from saved CSV outputs, including the paper-style service-level SR/TPR trade-off. The legacy `lstm_training.py`, `hbnn_training.py`, and `lstmd_training.py` remain available, but `run_experiments.py` is the reproducible results pipeline.
+
+The Kaggle model notebooks `LSTM_benchmark.ipynb`, `LSTMD_benchmark.ipynb`, and `HBNN_benchmark.ipynb` each run one S-B fit per processed trace (12 fits per model, one seed, up to 500 epochs with early stopping). Their result ZIPs include model-prefixed point-metric and service-level CSV exports. Add the three ZIPs to one Kaggle Dataset and run `compare_model_metrics.ipynb` to combine the models and generate paper-style confidence-vs-SR and TPR-vs-SR plots. This notebook compares the three architectures for S-B only; paper rows for S-U, M-U, and M-B are references without corresponding run metrics.
